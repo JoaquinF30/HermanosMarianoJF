@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class PowerUpEnergia : MonoBehaviour
 {
-    private void Start()
-    {
-        gm = GameObject.FindObjectOfType<GameManager>();
-    }
-    GameManager gm;
     public int CantidadDeEnergia;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            gm.energy += CantidadDeEnergia;
+            GameManager.instance.energy += CantidadDeEnergia;
             Destroy(gameObject);
         }
     }

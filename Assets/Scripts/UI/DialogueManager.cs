@@ -97,7 +97,7 @@ public class DialogueManager : MonoBehaviour
                 {
                     Speaker.text = Dialogues[index].Speaker;
                 }
-                else
+                else if (index-2 >= 0)
                 {
                     Speaker.text = Dialogues[index - 2].Speaker;
                 }
@@ -164,7 +164,7 @@ public class DialogueManager : MonoBehaviour
                 {
                     Speaker.text = DialoguesEnd[index].Speaker;
                 }
-                else
+                else if (index - 2 >= 0)
                 {
                     Speaker.text = DialoguesEnd[index - 2].Speaker;
                 }

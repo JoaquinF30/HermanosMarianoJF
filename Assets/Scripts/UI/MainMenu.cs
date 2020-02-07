@@ -57,6 +57,24 @@ public class MainMenu : MonoBehaviour
 
             GameManager.seenDialogues = PlayerPrefs.GetInt("DialogosMapa");
 
+            int zone = 1;
+            int level = 1;
+            
+            for (int i = 0; i < GameManager.StarsDictionary.Count; i++)
+            {
+                GameManager.StarsDictionary["Z"+zone+"N"+level] = PlayerPrefs.GetInt("Z" + zone + "N" + level) == 0 ? false : true;
+                
+                level++;
+
+                if (level > 3)
+                {
+                    zone++;
+                    level = 1;
+                }
+            }
+
+            GameManager.instance.StarDataTrace(GameManager.StarsDictionary, "Loaded");
+
             GameManager.instance.ContinuarAnalyticsEvent();
 
             SceneManager.LoadScene("MapaZonas");

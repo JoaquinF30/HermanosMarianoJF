@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 public class MapaBotonObligatorio : MonoBehaviour
 {
-    GameManager gm;
-    public GameObject Deuda;
+    //GameManager gm;
+    public GameObject Deuda;    
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        gm = GameObject.FindObjectOfType<GameManager>();
-    }
+    //void Start()
+    //{
+    //    gm = GameObject.FindObjectOfType<GameManager>();
+    //}
 
     public void Unlock (int deuda)
     {
@@ -21,7 +20,7 @@ public class MapaBotonObligatorio : MonoBehaviour
             GameManager.ahorros -= deuda;
             gameObject.GetComponent<Button>().interactable = true;
             GameManager.paidDeudas += 1;
-            gm.SaveData();
+            GameManager.instance.SaveData();
             Deuda.SetActive(false);
         }
         else

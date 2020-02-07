@@ -69,8 +69,7 @@ public class MapZoneButton : MonoBehaviour
             }
         }
 
-        StartCoroutine(SendEvent(zone));
-              
+        StartCoroutine(SendEvent(zone));              
     }
 
     IEnumerator SendEvent(int zone)

@@ -92,7 +92,7 @@ public class NewDialogueManager : MonoBehaviour
                 {
                     Speaker.text = StartCutscene.Dialogues[index].Speaker;
                 }
-                else if (index-2 > 0)
+                else if (index-2 >= 0)
                 {
                     Speaker.text = StartCutscene.Dialogues[index - 2].Speaker;
                 }
@@ -161,7 +161,7 @@ public class NewDialogueManager : MonoBehaviour
                 {
                     Speaker.text = EndCutscene.Dialogues[index].Speaker;
                 }
-                else if (index-2 > 0)
+                else if (index-2 >= 0)
                 {
                     Speaker.text = EndCutscene.Dialogues[index - 2].Speaker;
                 }

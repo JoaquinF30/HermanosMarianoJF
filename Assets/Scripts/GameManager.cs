@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 //using System.Text;
-using Cinemachine;
+//using Cinemachine;
 using UnityEngine.Analytics;
 
 //【◉ᴥ◉】
@@ -19,6 +19,22 @@ public class GameManager : MonoBehaviour
     public static int maxEnergy = 6;
     public int maxLives = 4;
     public static int ahorros;
+
+    public static Dictionary<string, bool> StarsDictionary = new Dictionary<string, bool>
+    {
+        {"Z1N1", false },
+        {"Z1N2", false },
+        {"Z1N3", false },
+        {"Z2N1", false },
+        {"Z2N2", false },
+        {"Z2N3", false },
+        {"Z3N1", false },
+        {"Z3N2", false },
+        {"Z3N3", false },
+        {"Z4N1", false },
+        {"Z4N2", false },
+        {"Z4N3", false }
+    };
 
     public static int zoneProgress = 1;
     public static int paidDeudas = 0;
@@ -70,7 +86,7 @@ public class GameManager : MonoBehaviour
 
 
         //level indexer
-        if (levelIndex != 0 && levelIndex != 2)
+        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3)
         {
             player = FindObjectOfType<Player>();
 
@@ -199,6 +215,33 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("MaxLives", maxLives);
         PlayerPrefs.SetInt("MaxEnergy", maxEnergy);
         PlayerPrefs.SetInt("DialogosMapa", seenDialogues);
+
+        foreach (var key in StarsDictionary)
+        {
+            int boolConversion = -1;
+            if(!key.Value)
+            {
+                boolConversion = 0;
+            }
+            else if(key.Value)
+            {
+                boolConversion = 1;
+            }
+            PlayerPrefs.SetInt(key.Key, boolConversion);            
+        }
+
+        StarDataTrace(StarsDictionary, "Saved");
+    }
+
+    public void StarDataTrace(Dictionary<string, bool> dictionary, string state)
+    {
+        string traceHolder = state + "    haz clic para ver más detalles" + "\n";
+        foreach (var key in dictionary)
+        {
+            traceHolder += key.Key + " > " + key.Value + "\n";
+        }
+
+        Debug.Log(traceHolder);
     }
 
     public void BackToMap()
@@ -346,10 +389,10 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(output);
+                    //Debug.Log(output);
                     return output;
                 }
-                Debug.Log(output);
+                //Debug.Log(output);
                 return output;                
             }
         }
@@ -617,8 +660,7 @@ public class GameManager : MonoBehaviour
         };
 
         analyticsTrace(dictionary, "SaltearCutscene");
-        Analytics.CustomEvent("SaltearCutscene", dictionary);
-        
+        Analytics.CustomEvent("SaltearCutscene", dictionary);        
     }
 
     public void ReiniciarNivelGameOver()
@@ -744,7 +786,7 @@ public class GameManager : MonoBehaviour
             {"Zona", zone }
         };
 
-        analyticsTrace(dictionary, "MapaClicErroneo");
+        //analyticsTrace(dictionary, "MapaClicErroneo");
         //Analytics.CustomEvent("MapaClicErroneo", dictionary);
     }
 

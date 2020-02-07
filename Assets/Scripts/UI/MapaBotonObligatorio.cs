@@ -13,13 +13,15 @@ public class MapaBotonObligatorio : MonoBehaviour
     //    gm = GameObject.FindObjectOfType<GameManager>();
     //}
 
-    public void Unlock (int deuda)
+    public void Unlock ()
     {
-        if(GameManager.ahorros >= deuda)
+        int zona = transform.parent.GetComponent<MapZoneButton>().zone;
+
+        if(GameManager.StarsDictionary["Z" + zona + "N1"] && GameManager.StarsDictionary["Z" + zona + "N2"] && GameManager.StarsDictionary["Z" + zona + "N3"])
         {
-            GameManager.ahorros -= deuda;
             gameObject.GetComponent<Button>().interactable = true;
             GameManager.paidDeudas += 1;
+            
             GameManager.instance.SaveData();
             Deuda.SetActive(false);
         }

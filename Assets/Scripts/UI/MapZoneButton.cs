@@ -6,11 +6,37 @@ using UnityEngine.UI;
 public class MapZoneButton : MonoBehaviour
 {
     public GameObject[] levelBotones;
+    public GameObject[] Stars = new GameObject[3];
     public bool unlocked;
+
+    public Sprite starGotSprite;
+
+    [HideInInspector] public int zone = 0;
 
     private void Start()
     {
         unlocked = GetComponent<Selectable>().interactable;
+
+        string name = gameObject.name;
+        
+        for (int i = 0; i < name.Length; i++)
+        {
+            if (char.IsNumber(name[i]))
+            {
+                zone = name[i] - '0';
+            }
+        }
+
+        int level = 1;
+        foreach (var star in Stars)
+        {            
+            if (GameManager.StarsDictionary["Z"+zone+"N"+level])
+            {
+                star.GetComponent<Image>().sprite = starGotSprite;
+            }
+            //star.SetActive(false);
+            level++;
+        }
         
         foreach (var levelBoton in levelBotones)
         {
@@ -30,15 +56,15 @@ public class MapZoneButton : MonoBehaviour
                 levelBoton.SetActive(true);
             }
 
-            string name = gameObject.name;
-            int zone = 0;
-            for (int i = 0; i < name.Length; i++)
-            {
-                if (char.IsNumber(name[i]))
-                {
-                    zone = name[i] - '0';
-                }
-            }
+            //string name = gameObject.name;
+            //int zone = 0;
+            //for (int i = 0; i < name.Length; i++)
+            //{
+            //    if (char.IsNumber(name[i]))
+            //    {
+            //        zone = name[i] - '0';
+            //    }
+            //}
 
             FindObjectOfType<MapZone>().clicZone = zone;
         }

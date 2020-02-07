@@ -493,6 +493,11 @@ public class GameManager : MonoBehaviour
             {"EnemigosVivos", FindObjectsOfType<Enemy>().Length }
         };
 
+        if(GetZone(levelIndex) > 0 && levelNumber != 4 && !StarsDictionary["Z" + dictionary["Zona"] + "N" + dictionary["Nivel"]])
+        {
+            StarsDictionary["Z" + dictionary["Zona"] + "N" + dictionary["Nivel"]] = true;
+        }
+
         analyticsTrace(dictionary, "GanarNivel");
 
         Analytics.CustomEvent("GanarNivel", dictionary);

@@ -146,7 +146,12 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+
+        if (GetComponent<Animator>())
+        {
+            anim = GetComponent<Animator>();
+        }
+        
         player = GameObject.FindObjectOfType<Player>();
         col = GetComponent<BoxCollider2D>();
 
@@ -384,7 +389,8 @@ public class Enemy : MonoBehaviour
                     triggerOffset.x *= -1;
                 }
 
-                anim.SetTrigger("Shoot");
+                if(anim != null)
+                    anim.SetTrigger("Shoot");
 
                 GameObject bulletInst = Instantiate(bullet, spawnBullet.transform.position, spawnBullet.transform.rotation);
                 bulletInst.GetComponent<Bullet>().damage = shootDamage;
@@ -467,20 +473,33 @@ public class Enemy : MonoBehaviour
                 generalActionsDelay = ActionsDelay(meleeDelay);
                 StopCoroutine(generalActionsDelay);
                 StartCoroutine(generalActionsDelay);
-                anim.SetTrigger("MeleeAttack");
+
+                if (anim != null)
+                {
+                    anim.SetTrigger("MeleeAttack");
+                }
+                else
+                {
+                    frameDamage = true;
+                }                    
 
                 canAttack = false;
             }
-
         }
         else if (hitBox.Length == 0 && meleeDamage > 0)
         {
             hit = false;
-        }
+            
+            if (anim == null)
+                frameDamage = true;
+        }        
 
         //hacer daño cuando el jugador este en la hitbox y el enemigo este en el frame de la animacion correcta
         if (hit && frameDamage && !hited && meleeDamage > 0 && lives > 0)
         {
+            if (anim == null)
+                frameDamage = false;
+
             player.TakeDamage(meleeDamage, playerDirection.x, gameObject.name);
             hited = true;
         }
@@ -491,26 +510,30 @@ public class Enemy : MonoBehaviour
     {
         Flip = DelayFlip();
 
-        anim.SetBool("OnGround", onGround);
+        if (anim != null)
+            anim.SetBool("OnGround", onGround);
 
         //caminar
         if (((trigger && ((chase && canChase) || (flee && canFlee && fleeActive)))
             || (patrol && canPatrol))
             && onGround && playerDirection.x != 0 && !nirvana)
         {
-            anim.SetBool("Run", true);
+            if (anim != null)
+                anim.SetBool("Run", true);
+            
             if (sprint && canSprint && !patrol)
             {
-                anim.SetBool("Sprint", true);
+                if (anim != null)
+                    anim.SetBool("Sprint", true);
             }
         }
-        else
+        else if (anim != null)
         {
             anim.SetBool("Run", false);
             anim.SetBool("Sprint", false);
         }
 
-        if(!onGround && isJumping && lives > 0)
+        if((!onGround || isJumping) && lives > 0 && canFlip && anim != null)
         {
             anim.SetTrigger("Jump");
         }
@@ -735,7 +758,8 @@ public class Enemy : MonoBehaviour
 
         if (lives == 0)
         {
-            anim.SetBool("Death", true);
+            if (anim != null)
+                anim.SetBool("Death", true);
 
             //if (FindObjectOfType<KillAll>() != null)
             //{
@@ -749,7 +773,8 @@ public class Enemy : MonoBehaviour
         }
         else if (lives > 0)
         {
-            anim.SetTrigger("GetHit");
+            if (anim != null)
+                anim.SetTrigger("GetHit");
 
             rb.AddForce(new Vector2(dir * 150, 200));
 
@@ -758,7 +783,7 @@ public class Enemy : MonoBehaviour
             StopCoroutine(generalActionsDelay);
             StartCoroutine(generalActionsDelay);
         }
-        else if(lives < 0 && !anim.GetBool("Death"))
+        else if(lives < 0 && anim != null && !anim.GetBool("Death"))
         {
             StopAllCoroutines();
             StartCoroutine(DeathDelay(0.1f));
@@ -773,7 +798,8 @@ public class Enemy : MonoBehaviour
 
     public void Stun(float timer)
     {
-        anim.SetTrigger("Stun");
+        if (anim != null)
+            anim.SetTrigger("Stun");
 
         //bc2D.size = new Vector2(0, 1.5f);
         //bc2D.offset = new Vector2(0, 0.5f);

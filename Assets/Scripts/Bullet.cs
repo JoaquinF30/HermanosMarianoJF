@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     Rigidbody2D rb;
-    LineRenderer lineRenderer;
+    //LineRenderer lineRenderer;
 
     public float speed = 16f;
     public int damage = 2;
@@ -14,23 +14,23 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        lineRenderer = GetComponent<LineRenderer>();
+        //lineRenderer = GetComponent<LineRenderer>();
     }
     void Start()
     {
         rb.velocity = transform.right * speed;
-        lineRenderer.SetPosition(0, new Vector3 (0,0,0));
+        //lineRenderer.SetPosition(0, new Vector3 (0,0,0));
 
         Destroy(gameObject, 8f);
     }
 
-    void Update()
-    {
-        if(lineRenderer.GetPosition(1).x > -4f)
-        {
-            lineRenderer.SetPosition(1, new Vector3(lineRenderer.GetPosition(1).x - 0.5f, 0, 0));
-        }
-    }
+    //void Update()
+    //{
+    //    if(lineRenderer.GetPosition(1).x > -4f)
+    //    {
+    //        lineRenderer.SetPosition(1, new Vector3(lineRenderer.GetPosition(1).x - 0.5f, 0, 0));
+    //    }
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

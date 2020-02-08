@@ -5,18 +5,11 @@ using UnityEngine;
 public class spikes : MonoBehaviour
 {
     public int damage;
-    GameManager gm;
 
     Player player;
     bool playerInside = false;
-    //bool canDamage = false;
 
-    IEnumerator damageTimer;
-
-    private void Start()
-    {
-        gm = GameObject.FindObjectOfType<GameManager>();
-    }
+    IEnumerator damageTimer;    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -35,7 +28,7 @@ public class spikes : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             collision.GetComponent<Enemy>().culpable = gameObject.name;
-            collision.GetComponent<Enemy>().TakeDamage(damage, dir * 2);
+            collision.GetComponent<Enemy>().TakeDamage(100, dir * 2);
         }
     }
 
@@ -44,23 +37,10 @@ public class spikes : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             playerInside = false;
-            //canDamage = false;
-            //player = collision.GetComponent<Player>();
             damageTimer = DamageTimer();
             StopCoroutine(damageTimer);
         }
     }
-
-    //private void FixedUpdate()
-    //{
-    //    if (playerInside && canDamage)
-    //    {
-    //        float dir = Mathf.FloorToInt(Mathf.Clamp(player.transform.position.x - gameObject.transform.position.x, -1, 1));
-    //        player.TakeDamage(damage, dir);
-    //        damageTimer = DamageTimer();
-    //        StartCoroutine(damageTimer);
-    //    }
-    //}
 
     IEnumerator DamageTimer()
     {

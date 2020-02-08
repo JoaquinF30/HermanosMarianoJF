@@ -57,6 +57,10 @@ MonoBehaviour:
   onLeftFloor: 0
   onRightWall: 0
   onLeftWall: 0
+  colLeft: 0
+  colRight: 0
+  colUp: 0
+  colDown: 0
   dropOnHit: {fileID: 0}
   dropOnDeath: {fileID: 0}
   MoneyObject: {fileID: 3452743171773193135, guid: 8acec45a81b4ee24695f77d0e8f7810b,
@@ -103,8 +107,9 @@ MonoBehaviour:
   shootDamage: 1
   shootDelay: 5
   minShootDis: 10
-  bullet: {fileID: 8580512828927243988, guid: 62a01b7536d1aac47809ca4583965b5d, type: 3}
+  bullet: {fileID: 8580512828927243988, guid: 8d632c157a1c1774a834916d73708420, type: 3}
   spawnBullet: {fileID: 7709295781598718064}
+  culpable: 
 --- !u!212 &1047825187501979426
 SpriteRenderer:
   m_ObjectHideFlags: 0

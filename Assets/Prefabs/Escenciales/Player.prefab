@@ -230,7 +230,7 @@ MonoBehaviour:
   bullets: 0
   shootDamage: 2
   spawnBullet: {fileID: 229974140}
-  bullet: {fileID: 8580512828927243988, guid: 62a01b7536d1aac47809ca4583965b5d, type: 3}
+  bullet: {fileID: 8580512828927243988, guid: 8d632c157a1c1774a834916d73708420, type: 3}
   groundLayer:
     serializedVersion: 2
     m_Bits: 256

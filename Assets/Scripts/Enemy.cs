@@ -106,6 +106,7 @@ public class Enemy : MonoBehaviour
     public int shootDamage = 1;
     bool canShoot = true;
     public float shootDelay = 5f;
+    public float shootWarning = 1.2f;
     public float minShootDis = 15f;
     public GameObject bullet;
     public GameObject spawnBullet;
@@ -360,41 +361,25 @@ public class Enemy : MonoBehaviour
             //disparar
             if (shootDamage > 0 && canShoot && canAttack && playerDistanceAbs.x <= minShootDis)
             {
-                generalActionsDelay = ActionsDelay(1f);
-                StopCoroutine(generalActionsDelay);
-                StartCoroutine(generalActionsDelay);
-
-                rb.velocity = new Vector2(0, 0);
-
-                ShootDelay = ShootDelayCou(shootDelay);
-                StopCoroutine(ShootDelay);
-                StartCoroutine(ShootDelay);
-
-                if (playerDirection.x == -1 && fRight)
+                if(!isJumping)
                 {
-                    fRight = false;
-                    transform.Rotate(0f, 180f, 0f);
+                    rb.velocity = new Vector2(0, 0);
 
-                    //volteo del hitbox y trigger
-                    meleeHitBoxOffset.x *= -1;
-                    triggerOffset.x *= -1;
+                    generalActionsDelay = ActionsDelay(shootWarning);
+                    StopCoroutine(generalActionsDelay);
+                    StartCoroutine(generalActionsDelay);
+
+                    if (anim != null)
+                    {
+                        anim.SetTrigger("Shoot");
+                    }
+
+                    Invoke("ActualShoot", shootWarning);
                 }
-                else if (playerDirection.x == 1 && !fRight)
+                else
                 {
-                    fRight = true;
-                    transform.Rotate(0f, 180f, 0f);
-
-                    //volteo del hitbox y trigger
-                    meleeHitBoxOffset.x *= -1;
-                    triggerOffset.x *= -1;
-                }
-
-                if(anim != null)
-                    anim.SetTrigger("Shoot");
-
-                GameObject bulletInst = Instantiate(bullet, spawnBullet.transform.position, spawnBullet.transform.rotation);
-                bulletInst.GetComponent<Bullet>().damage = shootDamage;
-                bulletInst.GetComponent<Bullet>().shooter = gameObject.name;
+                    ActualShoot();
+                }                
             }
 
         }
@@ -511,32 +496,34 @@ public class Enemy : MonoBehaviour
         Flip = DelayFlip();
 
         if (anim != null)
+        {
             anim.SetBool("OnGround", onGround);
 
-        //caminar
-        if (((trigger && ((chase && canChase) || (flee && canFlee && fleeActive)))
-            || (patrol && canPatrol))
-            && onGround && playerDirection.x != 0 && !nirvana)
-        {
-            if (anim != null)
-                anim.SetBool("Run", true);
-            
-            if (sprint && canSprint && !patrol)
+            //caminar
+            if (((trigger && ((chase && canChase) || (flee && canFlee && fleeActive)))
+                || (patrol && canPatrol))
+                && onGround && playerDirection.x != 0 && !nirvana)
             {
-                if (anim != null)
-                    anim.SetBool("Sprint", true);
-            }
-        }
-        else if (anim != null)
-        {
-            anim.SetBool("Run", false);
-            anim.SetBool("Sprint", false);
-        }
 
-        if( (!onGround || isJumping) && lives > 0 && canFlip && anim != null)
-        {
-            anim.SetTrigger("Jump");
-        }
+                anim.SetBool("Run", true);
+
+                if (sprint && canSprint && !patrol)
+                {
+
+                    anim.SetBool("Sprint", true);
+                }
+            }
+            else
+            {
+                anim.SetBool("Run", false);
+                anim.SetBool("Sprint", false);
+            }
+
+            if ((!onGround || isJumping) && lives > 0 && canFlip)
+            {
+                anim.SetTrigger("Jump");
+            }
+        }            
 
         //volteos
         if (trigger && canFlip)
@@ -583,6 +570,39 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+    }
+
+    void ActualShoot()
+    {
+        ShootDelay = ShootDelayCou(shootDelay);
+        StopCoroutine(ShootDelay);
+        StartCoroutine(ShootDelay);
+
+        if (playerDirection.x == -1 && fRight)
+        {
+            fRight = false;
+            transform.Rotate(0f, 180f, 0f);
+
+            //volteo del hitbox y trigger
+            meleeHitBoxOffset.x *= -1;
+            triggerOffset.x *= -1;
+        }
+        else if (playerDirection.x == 1 && !fRight)
+        {
+            fRight = true;
+            transform.Rotate(0f, 180f, 0f);
+
+            //volteo del hitbox y trigger
+            meleeHitBoxOffset.x *= -1;
+            triggerOffset.x *= -1;
+        }
+
+        if (anim != null)
+            anim.SetTrigger("Shoot");
+
+        GameObject bulletInst = Instantiate(bullet, spawnBullet.transform.position, spawnBullet.transform.rotation);
+        bulletInst.GetComponent<Bullet>().damage = shootDamage;
+        bulletInst.GetComponent<Bullet>().shooter = gameObject.name;
     }
 
     //si choco con algo
@@ -766,7 +786,7 @@ public class Enemy : MonoBehaviour
             //    FindObjectOfType<KillAll>().toKill -= 1;
             //}
 
-            lives = -1;
+            //lives = -1;
 
             StopAllCoroutines();
             StartCoroutine(DeathDelay(1f));

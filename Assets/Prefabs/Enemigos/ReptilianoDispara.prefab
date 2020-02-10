@@ -48,15 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfba997ca7a0cb49a190afe9779e444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDistance: {x: 0, y: 0}
   playerDistanceAbs: {x: 0, y: 0}
   playerDirection: {x: 0, y: 0}
   onGround: 0
   fRight: 0
-  onRightFloor: 0
-  onLeftFloor: 0
-  onRightWall: 0
-  onLeftWall: 0
+  colUp: 0
+  colDown: 0
   dropOnHit: {fileID: 0}
   dropOnDeath: {fileID: 0}
   MoneyObject: {fileID: 3452743171773193135, guid: 8acec45a81b4ee24695f77d0e8f7810b,
@@ -75,9 +72,9 @@ MonoBehaviour:
   leftFloor: {x: -0.6, y: -1.2}
   rightWall: {x: 0.6, y: -0.5}
   leftWall: {x: -0.6, y: -0.5}
+  ShowRange: 0
   triggerOffset: {x: 5, y: 0.34}
   triggerSize: {x: 12, y: 3}
-  ShowRange: 0
   trigger: 0
   lives: 3
   hitStunTimer: 1
@@ -102,9 +99,11 @@ MonoBehaviour:
   frameDamage: 0
   shootDamage: 2
   shootDelay: 5
+  shootWarning: 1.2
   minShootDis: 8
   bullet: {fileID: 8580512828927243988, guid: 878bb4b46dc4560479b53db85d6ca876, type: 3}
   spawnBullet: {fileID: 9002134389437970344}
+  culpable: 
 --- !u!212 &1772295465658738938
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -211,7 +210,7 @@ Animator:
   m_GameObject: {fileID: 6437625596970762198}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bf28239d46de68d49bdcd4603ac0298d, type: 2}
+  m_Controller: {fileID: 22100000, guid: 26250baf66e93a84baec83a86c39043d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

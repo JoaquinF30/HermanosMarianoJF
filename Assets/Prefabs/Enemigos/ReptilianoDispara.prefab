@@ -99,7 +99,7 @@ MonoBehaviour:
   frameDamage: 0
   shootDamage: 2
   shootDelay: 5
-  shootWarning: 1.2
+  shootWarning: 0.5
   minShootDis: 8
   bullet: {fileID: 8580512828927243988, guid: 878bb4b46dc4560479b53db85d6ca876, type: 3}
   spawnBullet: {fileID: 9002134389437970344}

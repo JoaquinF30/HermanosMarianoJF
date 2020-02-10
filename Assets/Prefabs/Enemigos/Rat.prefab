@@ -96,24 +96,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfba997ca7a0cb49a190afe9779e444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDistance: {x: 0, y: 0}
   playerDistanceAbs: {x: 0, y: 0}
   playerDirection: {x: 0, y: 0}
   onGround: 0
   fRight: 0
-  onRightFloor: 0
-  onLeftFloor: 0
-  onRightWall: 0
-  onLeftWall: 0
-  colLeft: 0
-  colRight: 0
   colUp: 0
   colDown: 0
   dropOnHit: {fileID: 0}
   dropOnDeath: {fileID: 0}
   MoneyObject: {fileID: 3452743171773193135, guid: 8acec45a81b4ee24695f77d0e8f7810b,
     type: 3}
-  MoneyValue: 10
+  MoneyValue: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -127,9 +120,9 @@ MonoBehaviour:
   leftFloor: {x: -0.7, y: -0.5}
   rightWall: {x: 0.7, y: 0}
   leftWall: {x: -0.7, y: 0}
+  ShowRange: 1
   triggerOffset: {x: 2.16, y: 1.4}
   triggerSize: {x: 5.67, y: 3.74}
-  ShowRange: 1
   trigger: 0
   lives: 1
   hitStunTimer: 0.2

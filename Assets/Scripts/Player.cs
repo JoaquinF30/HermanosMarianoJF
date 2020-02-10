@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     [Header("Ataque")]
     public LayerMask EnemyLayer;
     public int meleeDamage = 2;
+    public float meleeDelay = 0.3f;
     public Vector2 meleeHitBoxSize;
     public Vector2 meleeHitBoxOffset;
     bool hitInput = false;
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour
     [Header("Disparar")]
     public int bullets = 0;
     public int shootDamage = 2;
+    public float shootDelay = 0.1f;
     public GameObject spawnBullet;
     public GameObject bullet;
 
@@ -176,7 +178,7 @@ public class Player : MonoBehaviour
             }            
 
             /* IEnumerator */
-            hitDelay = HitDelay(0.3f);
+            hitDelay = HitDelay(meleeDelay);
             StopCoroutine(hitDelay);
             StartCoroutine(hitDelay);
         }
@@ -194,7 +196,7 @@ public class Player : MonoBehaviour
             runTimeSinc = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
             anim.SetTrigger("Shoot");
 
-            hitDelay = HitDelay(0.1f);
+            hitDelay = HitDelay(shootDelay);
             StopCoroutine(hitDelay);
             StartCoroutine(hitDelay);
         }

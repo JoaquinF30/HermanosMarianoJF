@@ -41,7 +41,7 @@ public class Bullet : MonoBehaviour
             if(collision.GetComponent<Enemy>().lives > 0)
             {
                 collision.GetComponent<Enemy>().culpable = "Bullet (" + shooter + ")";
-                collision.GetComponent<Enemy>().TakeDamage(damage, dir);
+                collision.GetComponent<Enemy>().TakeDamage(damage, dir/2);
             }            
             Destroy(gameObject);
         }

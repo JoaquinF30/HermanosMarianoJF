@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     Collider2D col;
 
     [Header("Debug, no tocar")]
-    public Vector2 playerDistance;
+    /*public*/ Vector2 playerDistance;
     public Vector2 playerDistanceAbs;
     public Vector2 playerDirection;
     public bool onGround;
@@ -18,14 +18,14 @@ public class Enemy : MonoBehaviour
     public bool fRight = true;
 
     //Con esto sabe si se va a caer si continua caminando
-    public bool onRightFloor;
-    public bool onLeftFloor;
+    /*public*/ bool onRightFloor;
+    /*public*/ bool onLeftFloor;
 
-    public bool onRightWall;
-    public bool onLeftWall;
+    /*public*/ bool onRightWall;
+    /*public*/ bool onLeftWall;
 
-    public bool colLeft;
-    public bool colRight;
+    /*public*/ bool colLeft;
+    /*public*/ bool colRight;
     public bool colUp;
     public bool colDown;
 
@@ -50,9 +50,9 @@ public class Enemy : MonoBehaviour
     public Vector2 rightFloor, leftFloor;
     public Vector2 rightWall, leftWall;
 
-    [Space]
-    public Vector2 triggerOffset, triggerSize;
+    [Header("Trigger")]
     public bool ShowRange;
+    public Vector2 triggerOffset, triggerSize;    
     public bool trigger = false;
 
     [Header("Vida")]
@@ -533,7 +533,7 @@ public class Enemy : MonoBehaviour
             anim.SetBool("Sprint", false);
         }
 
-        if((!onGround || isJumping) && lives > 0 && canFlip && anim != null)
+        if( (!onGround || isJumping) && lives > 0 && canFlip && anim != null)
         {
             anim.SetTrigger("Jump");
         }

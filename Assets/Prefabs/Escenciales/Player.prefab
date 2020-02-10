@@ -225,10 +225,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   meleeDamage: 1
+  meleeDelay: 0.37
   meleeHitBoxSize: {x: 0.93, y: 1.42}
   meleeHitBoxOffset: {x: 0.91, y: -0.22}
   bullets: 0
   shootDamage: 2
+  shootDelay: 0.2
   spawnBullet: {fileID: 229974140}
   bullet: {fileID: 8580512828927243988, guid: 8d632c157a1c1774a834916d73708420, type: 3}
   groundLayer:

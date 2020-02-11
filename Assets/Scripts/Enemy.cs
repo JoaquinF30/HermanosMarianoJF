@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
     Player player;
-    Collider2D col;
+    //Collider2D col;
 
     [Header("Debug, no tocar")]
     /*public*/ Vector2 playerDistance;
@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour
         }
         
         player = GameObject.FindObjectOfType<Player>();
-        col = GetComponent<BoxCollider2D>();
+        //col = GetComponent<BoxCollider2D>();
 
         //currentTime = Time.time + timeToIncrease;
 
@@ -198,6 +198,11 @@ public class Enemy : MonoBehaviour
         physicMaterial.friction = 1;
 
         rb.sharedMaterial = physicMaterial;
+
+        if(lives >= 10 && anim != null) 
+        {
+            anim.SetBool("Powerfull",true);
+        }
     }
 
     void Update()
@@ -451,14 +456,13 @@ public class Enemy : MonoBehaviour
         //evento de colision con el jugador en la hitbox, golpear        
         if (hitBox.Length > 0 && meleeDamage > 0)
         {
+            trigger = true;
             //Debug.Log("Player Hit");
             hit = true;
-            if (canAttack)
+            if (canAttack && !hited)
             {
-                generalActionsDelay = ActionsDelay(meleeDelay);
-                StopCoroutine(generalActionsDelay);
-                StartCoroutine(generalActionsDelay);
-
+                canAttack = false;
+                
                 if (anim != null)
                 {
                     anim.SetTrigger("MeleeAttack");
@@ -466,15 +470,21 @@ public class Enemy : MonoBehaviour
                 else
                 {
                     frameDamage = true;
-                }                    
-
-                canAttack = false;
+                }                
             }
         }
         else if (hitBox.Length == 0 && meleeDamage > 0)
         {
+            if (hit)
+            {
+                generalActionsDelay = ActionsDelay(meleeDelay);
+                StopCoroutine(generalActionsDelay);
+                StartCoroutine(generalActionsDelay);
+            }
+
             hit = false;
-            
+            hited = false;
+
             if (anim == null)
                 frameDamage = true;
         }        
@@ -487,6 +497,13 @@ public class Enemy : MonoBehaviour
 
             player.TakeDamage(meleeDamage, playerDirection.x, gameObject.name);
             hited = true;
+            canAttack = false;
+
+            generalActionsDelay = ActionsDelay(meleeDelay);
+
+            StopAllCoroutines();
+            //StopCoroutine(generalActionsDelay);
+            StartCoroutine(generalActionsDelay);
         }
 
     }
@@ -509,7 +526,6 @@ public class Enemy : MonoBehaviour
 
                 if (sprint && canSprint && !patrol)
                 {
-
                     anim.SetBool("Sprint", true);
                 }
             }
@@ -674,6 +690,11 @@ public class Enemy : MonoBehaviour
         {
             canChase = false;
         }
+
+        if (sprint)
+        {
+            canSprint = false;
+        }
         
         if (meleeDamage > 0)
         {
@@ -698,7 +719,12 @@ public class Enemy : MonoBehaviour
         {
             canChase = true;
         }
-        
+
+        if (sprint)
+        {
+            canSprint = true;
+        }
+
         if (meleeDamage > 0)
         {
             canAttack = true;
@@ -797,6 +823,8 @@ public class Enemy : MonoBehaviour
                 anim.SetTrigger("GetHit");
 
             rb.AddForce(new Vector2(dir * 150, 200));
+
+            hited = false;
 
             generalActionsDelay = ActionsDelay(hitStunTimer);
 

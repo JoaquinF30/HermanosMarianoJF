@@ -101,7 +101,7 @@ MonoBehaviour:
   shootDelay: 5
   shootWarning: 1.2
   minShootDis: 15
-  bullet: {fileID: 8580512828927243988, guid: 878bb4b46dc4560479b53db85d6ca876, type: 3}
+  bullet: {fileID: 8580512828927243988, guid: 9ea94927c5953cd43a2d0c8c7c9c3c84, type: 3}
   spawnBullet: {fileID: 9002134389437970344}
   culpable: 
 --- !u!212 &1772295465658738938

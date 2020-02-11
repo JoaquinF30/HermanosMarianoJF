@@ -368,7 +368,7 @@ public class Player : MonoBehaviour
         //hitbox de salto tipo mario, para detectar enemigos debajo
         Collider2D[] stompBox = Physics2D.OverlapBoxAll((Vector2)transform.position + stompBoxOffset, (Vector2)stompBoxSize, 0f, EnemyLayer);
 
-        if (stompBox.Length > 0)
+        if (stompBox.Length > 0 && !onGround && !inven)
         {
             for (int i = 0; i < stompBox.Length; i++)
             {

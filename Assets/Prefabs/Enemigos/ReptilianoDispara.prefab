@@ -72,7 +72,7 @@ MonoBehaviour:
   leftFloor: {x: -0.6, y: -1.2}
   rightWall: {x: 0.6, y: -0.5}
   leftWall: {x: -0.6, y: -0.5}
-  ShowRange: 0
+  ShowRange: 1
   triggerOffset: {x: 5, y: 0.34}
   triggerSize: {x: 12, y: 3}
   trigger: 0

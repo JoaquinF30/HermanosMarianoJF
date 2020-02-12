@@ -173,7 +173,7 @@ public class UserInterface : MonoBehaviour
         total.text = "" + (GameManager.instance.money - impuesto);
         GameManager.ahorros += (GameManager.instance.money - impuesto);
 
-        GameManager.instance.GanarAnalyticsEvent(GameManager.instance.money - impuesto);
+        GameManager.instance.GanarAnalyticsEvent();
     }
 
     public void CallMuteOnGm()

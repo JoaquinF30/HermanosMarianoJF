@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     //Analitics
     int levelNumber;
+    int _zone;
     float GameTime = 0;
     [HideInInspector]
     public string CondicionDeVictoria;
@@ -69,7 +70,7 @@ public class GameManager : MonoBehaviour
             instance = this;
 
             //gameObject.SendMessage("OnLevelWasLoaded", Application.loadedLevel); <- manera desactualizada de hacerlo, tira errores
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;            
         }
         else
         {
@@ -111,7 +112,9 @@ public class GameManager : MonoBehaviour
             //Debug.Log(levelNumber);
         }
 
-        if (resetCount == 0)
+        _zone = GetZone(levelIndex);
+
+        if (resetCount == 0 && levelIndex != 0 && levelIndex != 1 && levelIndex != 3)
         {
             //Debug.Log(level + " loaded for the first time");            
 
@@ -460,7 +463,7 @@ public class GameManager : MonoBehaviour
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
-                {"Zona", GetZone(levelIndex) },
+                {"Zona", instance._zone },
                 {"Nivel", instance.levelNumber },
                 {"Ahorros", ahorros }//,
                 //{"CuantasVeces", 1 }
@@ -471,13 +474,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GanarAnalyticsEvent(int ganancia)
+    public void GanarAnalyticsEvent()
     {
         float endTime = Time.time - instance.GameTime;
 
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(levelIndex) },
+            {"Zona", instance._zone },
             {"Nivel", instance.levelNumber },
             {"EjeX", Mathf.FloorToInt( player.transform.position.x ) },
             {"EjeY", Mathf.FloorToInt( player.transform.position.y ) },
@@ -509,7 +512,7 @@ public class GameManager : MonoBehaviour
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
-                {"Zona", GetZone(levelIndex) },
+                {"Zona", instance._zone },
                 {"Nivel", instance.levelNumber },
                 //{"EjeX", Mathf.FloorToInt( player.transform.position.x ) },
                 //{"EjeY", Mathf.FloorToInt( player.transform.position.y ) },
@@ -522,7 +525,7 @@ public class GameManager : MonoBehaviour
             analyticsTrace(dictionary, "Morir");
             Analytics.CustomEvent("Morir", dictionary);
 
-            MorirZN(GetZone(levelIndex), instance.levelNumber);
+            MorirZN(instance._zone, instance.levelNumber);
         }
     }
 
@@ -570,7 +573,7 @@ public class GameManager : MonoBehaviour
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
-                {"Zona", GetZone(levelIndex) },
+                {"Zona", instance._zone },
                 {"Nivel", instance.levelNumber },
                 {"EjeX", Mathf.FloorToInt( player.transform.position.x ) },
                 {"EjeY", Mathf.FloorToInt( player.transform.position.y ) },
@@ -596,7 +599,7 @@ public class GameManager : MonoBehaviour
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
-                {"Zona", GetZone(levelIndex) },
+                {"Zona", instance._zone },
                 {"Nivel", instance.levelNumber },
                 {"EjeX", Mathf.FloorToInt( player.transform.position.x ) },
                 {"EjeY", Mathf.FloorToInt( player.transform.position.y ) },
@@ -619,7 +622,7 @@ public class GameManager : MonoBehaviour
 
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(levelIndex) },
+            {"Zona", instance._zone },
             {"Nivel", instance.levelNumber },
             {"EjeX", Mathf.FloorToInt( player.transform.position.x ) },
             {"EjeY", Mathf.FloorToInt( player.transform.position.y ) },
@@ -641,7 +644,7 @@ public class GameManager : MonoBehaviour
         {        
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
-                {"Zona", GetZone(levelIndex) },
+                {"Zona", instance._zone },
                 {"Nivel", instance.levelNumber },
                 {"Tipo", tipo },
                 {"DialogosTotales", total - 1},
@@ -657,7 +660,7 @@ public class GameManager : MonoBehaviour
     {      
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(levelIndex) },
+            {"Zona", instance._zone },
             {"Nivel", instance.levelNumber },
             {"Tipo", tipo },
             {"DialogosTotales", total - 1},
@@ -672,7 +675,7 @@ public class GameManager : MonoBehaviour
     {        
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(levelIndex) },
+            {"Zona", instance._zone },
             {"Nivel", instance.levelNumber },
             {"EjeX", Mathf.FloorToInt( player.transform.position.x ) },
             {"EjeY", Mathf.FloorToInt( player.transform.position.y ) }
@@ -686,7 +689,7 @@ public class GameManager : MonoBehaviour
     {
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(levelIndex) },
+            {"Zona", instance._zone },
             {"Nivel", instance.levelNumber },
             {"EjeX", Mathf.FloorToInt( player.transform.position.x ) },
             {"EjeY", Mathf.FloorToInt( player.transform.position.y ) }
@@ -700,7 +703,7 @@ public class GameManager : MonoBehaviour
     {
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(levelIndex) },
+            {"Zona", instance._zone },
             {"Nivel", instance.levelNumber },
             {"EjeX", Mathf.FloorToInt( x ) },
             {"EjeY", Mathf.FloorToInt( y ) },
@@ -715,7 +718,7 @@ public class GameManager : MonoBehaviour
     {
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(levelIndex) },
+            {"Zona", instance._zone },
             {"Nivel", instance.levelNumber },
             //{"EjeX", Mathf.FloorToInt( EjeX ) },
             //{"EjeY", Mathf.FloorToInt( EjeY ) },
@@ -746,7 +749,7 @@ public class GameManager : MonoBehaviour
 
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(levelIndex) },
+            {"Zona", instance._zone },
             {"Nivel", instance.levelNumber },
             {"EjeX", Mathf.FloorToInt( EjeX ) },
             {"EjeY", Mathf.FloorToInt( EjeY ) },
@@ -776,7 +779,7 @@ public class GameManager : MonoBehaviour
     {
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
-            {"Zona", GetZone(level) },
+            {"Zona", instance._zone },
             {"Nivel", level }            
         };
 

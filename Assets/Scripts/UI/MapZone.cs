@@ -80,6 +80,7 @@ public class MapZone : MonoBehaviour
 
 
         //trucos del mapa
+        /*
         if (Input.GetKeyDown(KeyCode.L))
         {
             GameManager.ahorros += 10000;
@@ -105,5 +106,6 @@ public class MapZone : MonoBehaviour
             }
 
         }
+        */
     }
 }

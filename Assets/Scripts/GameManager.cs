@@ -180,6 +180,24 @@ public class GameManager : MonoBehaviour
                     enemies[i].trigger = false;
                 }
             }
+
+            //if(FindObjectOfType<PlataformaMovil>())
+            //{
+            //    PlataformaMovil[] allPlat = FindObjectsOfType<PlataformaMovil>();
+            //    for (int i = 0; i < allPlat.Length; i++)
+            //    {
+            //        if(allPlat[i].direction == Direction.Foward)
+            //        {
+            //            allPlat[i].index = 1;
+            //            allPlat[i].transform.position = allPlat[i].Points[0].transform.position;
+            //        }
+            //        else if(allPlat[i].direction == Direction.Backwards)
+            //        {
+            //            allPlat[i].index = allPlat[i].Points.Length;
+            //            allPlat[i].transform.position = allPlat[i].Points[0].transform.position;
+            //        }                    
+            //    }
+            //}
            
             player = FindObjectOfType<Player>();
 

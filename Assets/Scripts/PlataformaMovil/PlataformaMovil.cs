@@ -22,7 +22,7 @@ public class PlataformaMovil : MonoBehaviour
 
     private Vector3 target;
 
-    private int index = 0;
+    [HideInInspector] public int index = 0;
 
     bool onContact = false;
 

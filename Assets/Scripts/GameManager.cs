@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public string CondicionDeVictoria;
     [HideInInspector]
-    public string ultimoCulpable;    
+    public string ultimoCulpable;
     [HideInInspector]
     public int bulletCounter = 0;
 
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
             instance = this;
 
             //gameObject.SendMessage("OnLevelWasLoaded", Application.loadedLevel); <- manera desactualizada de hacerlo, tira errores
-            SceneManager.sceneLoaded += OnSceneLoaded;            
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        levelIndex = SceneManager.GetActiveScene().buildIndex;
+        levelIndex = scene.buildIndex;
         level = SceneManager.GetActiveScene().name;
         //levelName = AddSpacesToSentence(levelName);
         player = FindObjectOfType<Player>();
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
             money = 0;
 
             //Analytics            
-            GameTime = Time.time;            
+            GameTime = Time.time;
             bulletCounter = 0;
             //if (FindObjectOfType<CountDown>())
             //{
@@ -132,11 +132,7 @@ public class GameManager : MonoBehaviour
             //}
 
             IniciarNivelAnalyticsEvent();
-        }
-        else
-        {
-            Debug.Log("Level loaded again");
-        }
+        }        
     }
 
     //void Start()
@@ -198,7 +194,7 @@ public class GameManager : MonoBehaviour
             //        }                    
             //    }
             //}
-           
+
             player = FindObjectOfType<Player>();
 
             MorirAnalyticsEvent();
@@ -240,15 +236,15 @@ public class GameManager : MonoBehaviour
         foreach (var key in StarsDictionary)
         {
             int boolConversion = -1;
-            if(!key.Value)
+            if (!key.Value)
             {
                 boolConversion = 0;
             }
-            else if(key.Value)
+            else if (key.Value)
             {
                 boolConversion = 1;
             }
-            PlayerPrefs.SetInt(key.Key, boolConversion);            
+            PlayerPrefs.SetInt(key.Key, boolConversion);
         }
 
         StarDataTrace(StarsDictionary, "Saved");
@@ -359,7 +355,7 @@ public class GameManager : MonoBehaviour
             {
                 levelNumber = 4;
             }
-            
+
             //Debug.Log(levelNumber);
         }
 
@@ -387,9 +383,9 @@ public class GameManager : MonoBehaviour
     public string ConvertToType(string input)
     {
         string output = "";
-        
+
         //filtrado de nombre para el "tipo"
-        if(input.Contains("Bullet"))
+        if (input.Contains("Bullet"))
         {
             input = input.Remove(0, 8);
             input = input.Remove(input.Length - 1);
@@ -404,7 +400,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if (input[i-1] == ' ')
+                if (input[i - 1] == ' ')
                 {
                     output = output.Remove(i - 1);
                 }
@@ -414,7 +410,7 @@ public class GameManager : MonoBehaviour
                     return output;
                 }
                 //Debug.Log(output);
-                return output;                
+                return output;
             }
         }
 
@@ -435,10 +431,10 @@ public class GameManager : MonoBehaviour
             output += "X" + x;
             return output;
         }
-        
+
         for (int i = 0; i < input.Length; i++)
         {
-            if(input[i] != ' ')
+            if (input[i] != ' ')
             {
                 output += input[i];
             }
@@ -477,7 +473,7 @@ public class GameManager : MonoBehaviour
 
     void IniciarNivelAnalyticsEvent()
     {
-        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3)
+        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3 && instance._zone > -1)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
@@ -514,19 +510,22 @@ public class GameManager : MonoBehaviour
             {"EnemigosVivos", FindObjectsOfType<Enemy>().Length }
         };
 
-        if(GetZone(levelIndex) > 0 && levelNumber != 4 && !StarsDictionary["Z" + dictionary["Zona"] + "N" + dictionary["Nivel"]])
+        if (instance._zone > 0 && levelNumber != 4 && !StarsDictionary["Z" + dictionary["Zona"] + "N" + dictionary["Nivel"]])
         {
             StarsDictionary["Z" + dictionary["Zona"] + "N" + dictionary["Nivel"]] = true;
         }
 
-        analyticsTrace(dictionary, "GanarNivel");
+        if (instance._zone > -1)
+        {
+            analyticsTrace(dictionary, "GanarNivel");
+            Analytics.CustomEvent("GanarNivel", dictionary);
+        }
 
-        Analytics.CustomEvent("GanarNivel", dictionary);
     }
 
     void MorirAnalyticsEvent()
     {
-        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3)
+        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3 && instance._zone > -1)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
@@ -554,8 +553,8 @@ public class GameManager : MonoBehaviour
             float X = player.transform.position.x;
             float Y = player.transform.position.y;
 
-            int n = Mathf.Abs( Mathf.CeilToInt(X) / 3) * 10000 + Mathf.Abs(Mathf.CeilToInt(Y) / 3);
-            if(Y < 0)
+            int n = Mathf.Abs(Mathf.CeilToInt(X) / 3) * 10000 + Mathf.Abs(Mathf.CeilToInt(Y) / 3);
+            if (Y < 0)
             {
                 n = n + 1000;
             }
@@ -587,7 +586,7 @@ public class GameManager : MonoBehaviour
     {
         float endTime = Time.time - instance.GameTime;
 
-        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3)
+        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3 && instance._zone > -1)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
@@ -613,7 +612,7 @@ public class GameManager : MonoBehaviour
     {
         float endTime = Time.time - instance.GameTime;
 
-        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3)
+        if (levelIndex != 0 && levelIndex != 1 && levelIndex != 3 && instance._zone > -1)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
@@ -652,14 +651,17 @@ public class GameManager : MonoBehaviour
             //{"CondicionVictoria", instance.CondicionDeVictoria }
         };
 
-        analyticsTrace(dictionary, "ReiniciarNivelPausa");
-        Analytics.CustomEvent("ReiniciarNivelPausa", dictionary);
+        if (instance._zone > -1)
+        {
+            analyticsTrace(dictionary, "ReiniciarNivelPausa");
+            Analytics.CustomEvent("ReiniciarNivelPausa", dictionary);
+        }
     }
 
     public void CompletarCutscene(string tipo, int total, int ultimo)
     {
-        if(ultimo == total-1)
-        {        
+        if (ultimo == total - 1)
+        {
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
                 {"Zona", instance._zone },
@@ -668,14 +670,17 @@ public class GameManager : MonoBehaviour
                 {"DialogosTotales", total - 1},
                 //{"UltimoDialogo", ultimo }
             };
-        
-            analyticsTrace(dictionary, "CompletarCutscene");
-            Analytics.CustomEvent("CompletarCutscene", dictionary);
+
+            if (instance._zone > -1)
+            {
+                analyticsTrace(dictionary, "CompletarCutscene");
+                Analytics.CustomEvent("CompletarCutscene", dictionary);
+            }
         }
     }
 
     public void SaltearCutscene(string tipo, int total, int ultimo)
-    {      
+    {
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
             {"Zona", instance._zone },
@@ -684,13 +689,15 @@ public class GameManager : MonoBehaviour
             {"DialogosTotales", total - 1},
             {"UltimoDialogo", ultimo }
         };
-
-        analyticsTrace(dictionary, "SaltearCutscene");
-        Analytics.CustomEvent("SaltearCutscene", dictionary);        
+        if (instance._zone > -1)
+        {
+            analyticsTrace(dictionary, "SaltearCutscene");
+            Analytics.CustomEvent("SaltearCutscene", dictionary);
+        }
     }
 
     public void ReiniciarNivelGameOver()
-    {        
+    {
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
             {"Zona", instance._zone },
@@ -699,8 +706,11 @@ public class GameManager : MonoBehaviour
             {"EjeY", Mathf.FloorToInt( player.transform.position.y ) }
         };
 
-        analyticsTrace(dictionary, "ReiniciarNivelGameOver");
-        Analytics.CustomEvent("ReiniciarNivelGameOver", dictionary);
+        if (instance._zone > -1)
+        {
+            analyticsTrace(dictionary, "ReiniciarNivelGameOver");
+            Analytics.CustomEvent("ReiniciarNivelGameOver", dictionary);
+        }
     }
 
     public void VolverAlMapaGameOver()
@@ -713,8 +723,11 @@ public class GameManager : MonoBehaviour
             {"EjeY", Mathf.FloorToInt( player.transform.position.y ) }
         };
 
-        analyticsTrace(dictionary, "VolverAlMapaGameOver");
-        Analytics.CustomEvent("VolverAlMapaGameOver", dictionary);
+        if (instance._zone > -1)
+        {
+            analyticsTrace(dictionary, "VolverAlMapaGameOver");
+            Analytics.CustomEvent("VolverAlMapaGameOver", dictionary);
+        }
     }
 
     public void RecolectarObjeto(string name, float x, float y)
@@ -728,8 +741,11 @@ public class GameManager : MonoBehaviour
             {"Objeto", name }
         };
 
-        analyticsTrace(dictionary, "RecolectarObjeto");
-        Analytics.CustomEvent("RecolectarObjeto", dictionary);
+
+        {
+            analyticsTrace(dictionary, "RecolectarObjeto");
+            Analytics.CustomEvent("RecolectarObjeto", dictionary);
+        }
     }
 
     public void MatarEnemigo(float EjeX, float EjeY, string culpable)
@@ -744,10 +760,12 @@ public class GameManager : MonoBehaviour
             {"TipoDeObjetoQueLoMato", ConvertToType(culpable) }
         };
 
-        analyticsTrace(dictionary, "MatarEnemigo");
-        Analytics.CustomEvent("MatarEnemigo", dictionary);
-
-        MatarEnemigoNZ(EjeX, EjeY, culpable);
+        if (instance._zone > -1)
+        {
+            analyticsTrace(dictionary, "MatarEnemigo");
+            Analytics.CustomEvent("MatarEnemigo", dictionary);
+            MatarEnemigoNZ(EjeX, EjeY, culpable);
+        }        
     }
 
     public void MatarEnemigoNZ(float EjeX, float EjeY, string culpable)
@@ -798,7 +816,7 @@ public class GameManager : MonoBehaviour
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
             {"Zona", instance._zone },
-            {"Nivel", level }            
+            {"Nivel", level }
         };
 
         //analyticsTrace(dictionary, "MapaClicNivel");
@@ -819,15 +837,15 @@ public class GameManager : MonoBehaviour
     public void MapaCompletarCutscene(int total, string levelName, int zone)
     {
         string zonePath = "";
-        if(zone == 1)
+        if (zone == 1)
         {
             zonePath = "Zona 1 - Oficina/";
         }
-        else if(zone == 2)
+        else if (zone == 2)
         {
             zonePath = "Zona 2 - Ciudad/";
         }
-        else if(zone == 3)
+        else if (zone == 3)
         {
             zonePath = "Zona 3 - Prision/";
         }
@@ -836,8 +854,8 @@ public class GameManager : MonoBehaviour
             zonePath = "Zona 4 - Ciudad Inundada/";
         }
 
-        int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + zonePath + levelName + ".unity");   
-        
+        int index = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + zonePath + levelName + ".unity");
+
         Dictionary<string, object> dictionary = new Dictionary<string, object>
         {
             {"Zona", GetZone(index) },
@@ -845,7 +863,7 @@ public class GameManager : MonoBehaviour
             {"DialogosTotales", total - 1},
             //{"UltimoDialogo", ultimo }
         };
-        
+
         analyticsTrace(dictionary, "MapaCompletarCutscene");
         Analytics.CustomEvent("MapaCompletarCutscene", dictionary);
     }
@@ -881,7 +899,7 @@ public class GameManager : MonoBehaviour
         };
 
         analyticsTrace(dictionary, "MapaSaltearCutscene");
-        Analytics.CustomEvent("MapaSaltearCutscene", dictionary);        
+        Analytics.CustomEvent("MapaSaltearCutscene", dictionary);
     }
 
     public void Calificar(int stars)
